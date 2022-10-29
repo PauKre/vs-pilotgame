@@ -10,11 +10,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:vstodo.helloWorld",
-    "onCommand:vstodo.askQuestion",
     "onCommand:vstodo.refresh",
-    "onCommand:vstodo.addTodo",
-    "onCommand:vstodo.authenticate",
     "onView:pilotgame-sidebar"
   ],
   "main": "./dist/extension.js",
@@ -41,28 +37,9 @@
     },
     "commands": [
       {
-        "command": "vstodo.helloWorld",
-        "title": "Hello World"
-      },
-      {
-        "command": "vstodo.askQuestion",
-        "category": "VSTodo",
-        "title": "Ask Question"
-      },
-      {
         "command": "vstodo.refresh",
         "category": "VSTodo",
         "title": "Refresh"
-      },
-      {
-        "command": "vstodo.addTodo",
-        "category": "VSTodo",
-        "title": "Add Todo From Selection"
-      },
-      {
-        "command": "vstodo.authenticate",
-        "category": "VSTodo",
-        "title": "Authenticate"
       }
     ]
   },
