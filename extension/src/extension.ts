@@ -1,14 +1,14 @@
 import * as vscode from "vscode";
 import { SidebarProvider } from "./SidebarProvider";
 import { TokenManager } from "./TokenManager";
+import { TextDocumentChangeListener } from "./textDocumentChangeListener";
+
+let tdcl: TextDocumentChangeListener | undefined = undefined
 
 export function activate(context: vscode.ExtensionContext) {
 
-  console.log("Warum loggst du denn jetzt nicht mehr? D:")
-
-  // var extenstionIds =  vscode.extensions.all.map(x => x.id);
-  // console.log(extenstionIds);
-
+  tdcl = new TextDocumentChangeListener(context);
+  context.subscriptions.push(tdcl);
 
   var copilotExtension = vscode.extensions.getExtension('GitHub.copilot');
 
@@ -19,7 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
         console.log("Extension activated");
         // comment next line out for release
         // findCommand(); 
-        vscode.commands.executeCommand("github.copilot.generate");
+        // vscode.commands.executeCommand("github.copilot.generate");
       },
       function () {
         console.log("Extension activation failed");
@@ -48,6 +48,7 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() { }
+
 function printExtensionInfo(xmlExtension: vscode.Extension<any> | undefined) {
   if (xmlExtension) {
     console.log("Extension found");
