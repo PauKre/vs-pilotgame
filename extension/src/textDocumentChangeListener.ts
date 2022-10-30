@@ -17,8 +17,6 @@ export class TextDocumentChangeListener {
     }
 
     private async onTextDocumentChange(event: vscode.TextDocumentChangeEvent): Promise<void> {
-        // console.log("onTextDocumentChange");
-
         let text = event.contentChanges.map(change => change.text).join('');
         if (text.includes(" ") && text.length > 1) {
             console.log("copilot change: " + text);
