@@ -9,7 +9,7 @@ export class TextDocumentChangeListener {
         this.context = context;
         this.disposable = this.setupDisposables();
     }
-    setupDisposables(): vscode.Disposable{
+    setupDisposables(): vscode.Disposable {
         const textDocumentChangeListener = vscode.workspace.onDidChangeTextDocument(this.onTextDocumentChange, this);
         return vscode.Disposable.from(
             textDocumentChangeListener
@@ -17,15 +17,18 @@ export class TextDocumentChangeListener {
     }
 
     private async onTextDocumentChange(event: vscode.TextDocumentChangeEvent): Promise<void> {
-        console.log("onTextDocumentChange");
-        console.log(event);
-        console.log("context: " + this.context);
+        // console.log("onTextDocumentChange");
+
+        let text = event.contentChanges.map(change => change.text).join('');
+        if (text.includes(" ") && text.length > 1) {
+            console.log("copilot change: " + text);
+        }
     }
 
     public dispose(): void {
         if (this.disposable) {
-          this.disposable.dispose()
+            this.disposable.dispose()
         }
-      }
+    }
 
 }
