@@ -7,7 +7,8 @@ let tdcl: TextDocumentChangeListener | undefined = undefined
 
 export function activate(context: vscode.ExtensionContext) {
 
-  tdcl = new TextDocumentChangeListener(context);
+  const sidebarProvider = new SidebarProvider(context.extensionUri);
+  tdcl = new TextDocumentChangeListener(context, sidebarProvider);
   context.subscriptions.push(tdcl);
 
   var copilotExtension = vscode.extensions.getExtension('GitHub.copilot');
@@ -28,8 +29,6 @@ export function activate(context: vscode.ExtensionContext) {
   // printExtensionInfo(copilotExtension);
 
   TokenManager.globalState = context.globalState;
-
-  const sidebarProvider = new SidebarProvider(context.extensionUri);
 
   context.subscriptions.push(
     vscode.window.registerWebviewViewProvider("pilotgame-sidebar", sidebarProvider)
