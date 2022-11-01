@@ -24,7 +24,7 @@ export class TextDocumentChangeListener {
     private async onTextDocumentChange(event: vscode.TextDocumentChangeEvent): Promise<void> {
         let text = event.contentChanges.map(change => change.text).join('');
         if (text.includes(" ") && text.length > 10) {
-            console.log("copilot change: " + text);
+            console.log("copilot was triggered");
             this.sidebarProvider._view?.webview.postMessage({ type: 'copilot-change', value: text, });
         }
     }
