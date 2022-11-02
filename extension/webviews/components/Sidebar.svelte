@@ -12,7 +12,7 @@
                     lastChange=message.value;
             }
         });
-    });
+    }); 
 </script>
 
 <Progress/>
