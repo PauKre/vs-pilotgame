@@ -3,8 +3,9 @@
     let levelIcon = "🔴";
     let levelNumber = 1;
     let levelName = "Beginner";
-    let currentPoints = 0;
-    let maxLevelPoints = 100;
+    let currentPoints = 120;
+    let maxLevelPoints = 200;
+    let currentPointsPercent = (currentPoints*100/maxLevelPoints).toString() + "%";
 
     onMount(() => {
         window.addEventListener("message", (event) => {
@@ -27,8 +28,8 @@
     </div>
     <div class="pointsStatus">
         Pilotpoints<br />
-        <div class="ppprogress">
-            <progress value="30" max="100" />
+        <div class="ppprogress" style="--current-points: {currentPointsPercent}">
+            <progress/>
         </div>
         <br />
         {currentPoints}/{maxLevelPoints}<br />
@@ -42,7 +43,7 @@
 
     .ppprogress {
         margin: 5px;
-        border: 1px solid #fff;
+        border: 2px solid #fff;
         position: relative;
         display: inline-block;
         background: #333333;
@@ -53,7 +54,7 @@
 
     @keyframes progress-animation {
         to {
-            width: 75%;
+            width: var(--current-points);
         }
     }
 
