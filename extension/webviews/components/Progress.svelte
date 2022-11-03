@@ -18,30 +18,67 @@
 </script>
 
 <h3>Progress</h3>
-<div class="statusWrapper" />
-<div class="levelStatus">
-    Level<br />
-    {levelIcon}<br />
-    {levelNumber}<br />
-    {levelName}<br />
-</div>
-<div class="pointsStatus">
-    Pilotpoints<br />
-    <progress value="30" max="100" /><br />
-    {currentPoints}/{maxLevelPoints}<br />
+<div class="statusWrapper">
+    <div class="levelStatus">
+        Level<br />
+        {levelIcon}<br />
+        {levelNumber}<br />
+        {levelName}<br />
+    </div>
+    <div class="pointsStatus">
+        Pilotpoints<br />
+        <div class="ppprogress">
+            <progress value="30" max="100" />
+        </div>
+        <br />
+        {currentPoints}/{maxLevelPoints}<br />
+    </div>
 </div>
 
 <style>
+    progress {
+        opacity: 0;
+    }
+
+    .ppprogress {
+        margin: 5px;
+        border: 1px solid #fff;
+        position: relative;
+        display: inline-block;
+        background: #333333;
+        height: 20px;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    @keyframes progress-animation {
+        to {
+            width: 75%;
+        }
+    }
+
+    .ppprogress::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 0;
+        background: #cc6633;
+        animation: progress-animation 0.3s ease-in forwards;
+    }
+
     .statusWrapper {
         text-align: center;
-        border: 1px solid black;
         overflow: hidden; /* will contain if #first is longer than #second */
     }
     .levelStatus {
+        padding: 5px;
         float: left; /* add this */
         border: 1px solid red;
     }
     .pointsStatus {
+        padding: 5px;
         border: 1px solid green;
         overflow: hidden; /* if you don't want #second to wrap below #first */
     }
