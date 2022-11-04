@@ -3,19 +3,37 @@
     let levelIcon = "🔴";
     let levelNumber = 1;
     let levelName = "Beginner";
-    let currentPoints = 120;
-    let maxLevelPoints = 200;
-    let currentPointsPercent = (currentPoints*100/maxLevelPoints).toString() + "%";
+    let currentPoints = 0;
+    let maxLevelPoints = 100;
+    let currentMaxPointIncrease = maxLevelPoints;
+    const levelIncreaseStep = 20;
+    let currentPointsPercent =
+        ((currentPoints * 100) / maxLevelPoints).toString() + "%";
 
     onMount(() => {
         window.addEventListener("message", (event) => {
             const message = event.data;
             switch (message.type) {
                 case "copilot-change":
-                    currentPoints += message.value.length;
+                    addPoints(message.value.length);
             }
         });
     });
+
+    function addPoints(amount: number) {
+        currentPoints += amount;
+        if (currentPoints >= maxLevelPoints) {
+            levelNumber++;
+            levelName = "TODO";
+            levelIcon = "🟡";
+            let curMaxPoints = maxLevelPoints;
+            currentMaxPointIncrease += levelIncreaseStep;
+            maxLevelPoints = maxLevelPoints+currentMaxPointIncrease;
+            currentPointsPercent = (((currentPoints -curMaxPoints)*100) / (maxLevelPoints-curMaxPoints)).toString() + "%";
+        }else{
+            currentPointsPercent = ((currentPoints * 100) / maxLevelPoints).toString() + "%";
+        }
+    }
 </script>
 
 <h3>Progress</h3>
@@ -28,8 +46,11 @@
     </div>
     <div class="pointsStatus">
         Pilotpoints<br />
-        <div class="ppprogress" style="--current-points: {currentPointsPercent}">
-            <progress/>
+        <div
+            class="ppprogress"
+            style="--current-points: {currentPointsPercent}"
+        >
+            <progress />
         </div>
         <br />
         {currentPoints}/{maxLevelPoints}<br />

@@ -22,9 +22,14 @@ export class TextDocumentChangeListener {
     }
 
     private async onTextDocumentChange(event: vscode.TextDocumentChangeEvent): Promise<void> {
-        let text = event.contentChanges.map(change => change.text).join('');
-        if (text.includes(" ") && text.length > 10) {
-            console.log("copilot was triggered");
+        if(event.contentChanges.length != 1) {
+            return;
+        }
+        let text = event.contentChanges[0].text;
+        text = text.replace('\t', '');
+        text = text.replace('\r\n', '');
+        if (text.includes(' ') && text.length > 5) {
+            text = text.replace(/\s/g, "");
             this.sidebarProvider._view?.webview.postMessage({ type: 'copilot-change', value: text, });
         }
     }
