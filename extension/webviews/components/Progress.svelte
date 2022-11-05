@@ -5,6 +5,7 @@
     let levelName = "Beginner";
     let currentPoints = 0;
     let maxLevelPoints = 100;
+    let lastMaxPoints = 0;
     let currentMaxPointIncrease = maxLevelPoints;
     const levelIncreaseStep = 20;
     let currentPointsPercent =
@@ -22,17 +23,21 @@
 
     function addPoints(amount: number) {
         currentPoints += amount;
-        if (currentPoints >= maxLevelPoints) {
+        while (currentPoints >= maxLevelPoints) {
+            // TODO: Animate level UP
             levelNumber++;
             levelName = "TODO";
             levelIcon = "🟡";
-            let curMaxPoints = maxLevelPoints;
+            lastMaxPoints = maxLevelPoints;
             currentMaxPointIncrease += levelIncreaseStep;
-            maxLevelPoints = maxLevelPoints+currentMaxPointIncrease;
-            currentPointsPercent = (((currentPoints -curMaxPoints)*100) / (maxLevelPoints-curMaxPoints)).toString() + "%";
-        }else{
-            currentPointsPercent = ((currentPoints * 100) / maxLevelPoints).toString() + "%";
+            maxLevelPoints = maxLevelPoints + currentMaxPointIncrease;
+
         }
+        currentPointsPercent =
+                (
+                    ((currentPoints - lastMaxPoints) * 100) /
+                    (maxLevelPoints - lastMaxPoints)
+                ).toString() + "%";
     }
 </script>
 
