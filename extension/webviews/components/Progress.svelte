@@ -14,11 +14,11 @@
     let currentPointsPercent =
         (currentPoints * 100) / maxLevelPoints;
 
-    const animation = tweened(0, {
-		duration: 2000,
+    const animationDuration = 1000;
+        const progress = tweened(0, {
+		duration: animationDuration,
 		easing: cubicOut
 	});
-        let progress:any = animation;
 
     onMount(() => {
         window.addEventListener("message", (event) => {
@@ -32,8 +32,12 @@
 
     function addPoints(amount: number) {
         currentPoints += amount;
+        if(currentPoints<maxLevelPoints){
+            currentPointsPercent =((currentPoints - lastMaxPoints)) / (maxLevelPoints - lastMaxPoints);
+            progress.set(currentPointsPercent);
+            return;
+        }
         while (currentPoints >= maxLevelPoints) {
-            // TODO: Animate level UP
             levelNumber++;
             levelName = "TODO";
             levelIcon = "🟡";
@@ -41,9 +45,13 @@
             currentMaxPointIncrease += levelIncreaseStep;
             maxLevelPoints = maxLevelPoints + currentMaxPointIncrease;
             progress.set(1);
+            new Promise((resolve) => setTimeout(resolve, animationDuration)).then(() => {
+                progress.set(0, {duration: 0});
+                currentPointsPercent =((currentPoints - lastMaxPoints)) / (maxLevelPoints - lastMaxPoints);
+                progress.set(currentPointsPercent);
+
+            });
         }
-        currentPointsPercent =((currentPoints - lastMaxPoints)) / (maxLevelPoints - lastMaxPoints);
-        progress.set(currentPointsPercent);
     }
 </script>
 
@@ -61,25 +69,32 @@
         <div>
             <progress value={$progress}/>
         </div>
-        <br />
         {currentPoints}/{maxLevelPoints}<br />
     </div>
 </div>
 
 <style>
 
+    h3{
+        font-size: 25px;
+    }
+
+    progress{
+        width: 200px;
+        height: 20px;
+    }
+
     .statusWrapper {
         text-align: center;
         overflow: hidden; /* will contain if #first is longer than #second */
     }
     .levelStatus {
+        width: 80px;
         padding: 5px;
         float: left; /* add this */
-        border: 1px solid red;
     }
     .pointsStatus {
         padding: 5px;
-        border: 1px solid green;
         overflow: hidden; /* if you don't want #second to wrap below #first */
     }
 </style>
