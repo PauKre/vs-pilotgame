@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
+    import { fade, fly } from 'svelte/transition';
     let levelIcon = "🔴";
     let levelNumber = 1;
     let levelName = "Beginner";
@@ -31,13 +32,12 @@
             lastMaxPoints = maxLevelPoints;
             currentMaxPointIncrease += levelIncreaseStep;
             maxLevelPoints = maxLevelPoints + currentMaxPointIncrease;
-
         }
         currentPointsPercent =
-                (
-                    ((currentPoints - lastMaxPoints) * 100) /
-                    (maxLevelPoints - lastMaxPoints)
-                ).toString() + "%";
+            (
+                ((currentPoints - lastMaxPoints) * 100) /
+                (maxLevelPoints - lastMaxPoints)
+            ).toString() + "%";
     }
 </script>
 
