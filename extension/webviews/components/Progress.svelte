@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import { tweened } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
+    import { writable } from "svelte/store";
     let levelIcon = "🔴";
     let levelNumber = 1;
     let levelName = "Beginner";
@@ -11,12 +12,13 @@
     let currentMaxPointIncrease = maxLevelPoints;
     const levelIncreaseStep = 20;
     let currentPointsPercent =
-        ((currentPoints * 100) / maxLevelPoints).toString() + "%";
+        (currentPoints * 100) / maxLevelPoints;
 
-    const progress = tweened(0, {
+    const animation = tweened(0, {
 		duration: 2000,
 		easing: cubicOut
 	});
+        let progress:any = animation;
 
     onMount(() => {
         window.addEventListener("message", (event) => {
@@ -32,19 +34,16 @@
         currentPoints += amount;
         while (currentPoints >= maxLevelPoints) {
             // TODO: Animate level UP
-            progress.set(1);
             levelNumber++;
             levelName = "TODO";
             levelIcon = "🟡";
             lastMaxPoints = maxLevelPoints;
             currentMaxPointIncrease += levelIncreaseStep;
             maxLevelPoints = maxLevelPoints + currentMaxPointIncrease;
+            progress.set(1);
         }
-        currentPointsPercent =
-            (
-                ((currentPoints - lastMaxPoints) * 100) /
-                (maxLevelPoints - lastMaxPoints)
-            ).toString() + "%";
+        currentPointsPercent =((currentPoints - lastMaxPoints)) / (maxLevelPoints - lastMaxPoints);
+        progress.set(currentPointsPercent);
     }
 </script>
 
@@ -57,11 +56,9 @@
         {levelName}<br />
     </div>
     <div class="pointsStatus">
-        Pilotpoints<br />
-        <div
-            class="ppprogress"
-            style="--current-points: {currentPointsPercent}"
-        >
+        Pilotpoints<br/>
+        {currentPointsPercent}<br/>
+        <div>
             <progress value={$progress}/>
         </div>
         <br />
