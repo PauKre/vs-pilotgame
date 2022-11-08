@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { fade, fly } from 'svelte/transition';
+    import { tweened } from 'svelte/motion';
+	import { cubicOut } from 'svelte/easing';
     let levelIcon = "🔴";
     let levelNumber = 1;
     let levelName = "Beginner";
@@ -11,6 +12,11 @@
     const levelIncreaseStep = 20;
     let currentPointsPercent =
         ((currentPoints * 100) / maxLevelPoints).toString() + "%";
+
+    const progress = tweened(0, {
+		duration: 2000,
+		easing: cubicOut
+	});
 
     onMount(() => {
         window.addEventListener("message", (event) => {
@@ -26,6 +32,7 @@
         currentPoints += amount;
         while (currentPoints >= maxLevelPoints) {
             // TODO: Animate level UP
+            progress.set(1);
             levelNumber++;
             levelName = "TODO";
             levelIcon = "🟡";
@@ -55,7 +62,7 @@
             class="ppprogress"
             style="--current-points: {currentPointsPercent}"
         >
-            <progress />
+            <progress value={$progress}/>
         </div>
         <br />
         {currentPoints}/{maxLevelPoints}<br />
@@ -63,37 +70,6 @@
 </div>
 
 <style>
-    progress {
-        opacity: 0;
-    }
-
-    .ppprogress {
-        margin: 5px;
-        border: 2px solid #fff;
-        position: relative;
-        display: inline-block;
-        background: #333333;
-        height: 20px;
-        border-radius: 6px;
-        overflow: hidden;
-    }
-
-    @keyframes progress-animation {
-        to {
-            width: var(--current-points);
-        }
-    }
-
-    .ppprogress::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 0;
-        background: #cc6633;
-        animation: progress-animation 0.3s ease-in forwards;
-    }
 
     .statusWrapper {
         text-align: center;
