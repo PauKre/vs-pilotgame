@@ -2,7 +2,6 @@
     import { onMount } from "svelte";
     import { tweened } from 'svelte/motion';
 	import { cubicOut } from 'svelte/easing';
-    import { writable } from "svelte/store";
     let levelIcon = "🔴";
     let levelNumber = 1;
     let levelName = "Beginner";
@@ -89,7 +88,7 @@
         overflow: hidden; /* will contain if #first is longer than #second */
     }
     .levelStatus {
-        width: 80px;
+        width: 120px;
         padding: 5px;
         float: left; /* add this */
     }

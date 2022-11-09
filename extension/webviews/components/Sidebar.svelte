@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import Progress from "./Progress.svelte";
-    import Upload from "./Upload.svelte";
+    import Challenges from "./Challenges.svelte";
 
     let lastChange = "";
 
@@ -17,9 +17,4 @@
 </script>
 
 <Progress/>
-<Upload/>
-
-<!-- <h1>Hi Pilot!</h1>
-<p>Last CoPilot change: 
-    {lastChange}
-</p> -->
+<Challenges/>
